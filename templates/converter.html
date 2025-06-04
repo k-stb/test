@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Converter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Media Converter</h1>
+        <p>Konvertiere Videos und Audios in eleganter Apple-Ästhetik.</p>
+    </header>
+
+    <section id="upload-section">
+        {% if not ffmpeg_available %}
+        <div class="error">FFmpeg ist nicht installiert. Bitte installiere FFmpeg, um den Konverter zu verwenden.</div>
+        {% else %}
+        <form id="convert-form">
+            <div class="form-group">
+                <label for="media_file">Datei auswählen</label>
+                <input type="file" id="media_file" name="media_file" required>
+            </div>
+            <div class="form-group">
+                <label for="output_format">Ausgabeformat</label>
+                <select id="output_format" name="output_format">
+                    {% for fmt, data in SUPPORTED_OUTPUT_FORMATS.items() %}
+                    <option value="{{ fmt }}">{{ data['name'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="quality">Qualität</label>
+                <select id="quality" name="quality">
+                    <option value="high">Hoch</option>
+                    <option value="medium" selected>Mittel</option>
+                    <option value="low">Niedrig</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Konvertieren</button>
+        </form>
+        {% endif %}
+    </section>
+
+    <section id="progress-section" class="hidden">
+        <div class="progress-bar">
+            <div id="progress" style="width:0%"></div>
+        </div>
+        <p id="progress-text">0%</p>
+    </section>
+
+    <section id="download-section" class="hidden">
+        <a id="download-link" class="btn" href="#">Download</a>
+    </section>
+</div>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

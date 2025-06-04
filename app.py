@@ -165,7 +165,11 @@ def time_to_seconds(time_str):
 def index():
     """Hauptseite"""
     ffmpeg_available = check_ffmpeg()
-    return render_template('converter.html', ffmpeg_available=ffmpeg_available)
+    return render_template(
+        'converter.html',
+        ffmpeg_available=ffmpeg_available,
+        SUPPORTED_OUTPUT_FORMATS=SUPPORTED_OUTPUT_FORMATS
+    )
 
 @app.route('/convert', methods=['POST'])
 def convert_file():
